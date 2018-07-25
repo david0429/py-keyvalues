@@ -1,6 +1,6 @@
 import sys
 from collections import OrderedDict
-              
+
 class keyvalues:
     kv = OrderedDict()
     def load_from_file(self, path):
@@ -64,7 +64,7 @@ class keyvalues:
                             char = "\n"
                         elif char == "r":
                             char = "\r"
-                        elif char == " ": 
+                        elif char == " ":
                             char = " "
                         else:
                             raise Exception("Invalid Escape Character \"{}\" at line {}".format(char, line))
@@ -119,6 +119,9 @@ class keyvalues:
                 obj = tree.pop()
                 if treeType[len(treeType) - 1] == TYPE_BLOCK:
                     tree[len(tree) - 1][keys[len(keys) - 1]] = obj
+                    if "solid" in keys[len(keys) - 1] or "entity" in keys[len(keys) - 1] or "side" in keys[len(keys) - 1]:
+                        tree[len(tree) - 1][keys[len(keys) - 1] + "_" + obj["id"]] = obj
+                        del tree[len(tree) - 1][keys[len(keys) - 1]]
                     keys[len(keys) - 1] = None
                 else:
                     tree[len(tree) - 1].append(obj)
@@ -174,5 +177,3 @@ class keyvalues:
         if len(tree) != 1:
             raise Exception("Missing Brackets")
         return tree[0]
-
-
